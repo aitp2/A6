@@ -1,0 +1,6 @@
+
+fsquid:UselessImportCheck"BRemove this unused import 'movies.spring.data.neo4j.domain.Movie'.(ÈØ˜ê
+psquid:UselessImportCheck"LRemove this unused import 'org.springframework.data.repository.query.Param'.(©”šô
+Zsquid:UselessImportCheck
+"1Remove this unused import 'java.util.Collection'.(¹ÉÐšùÿÿÿÿ
+psquid:UselessImportCheck"LRemove this unused import 'org.springframework.data.neo4j.annotation.Query'.(šÛ¼ã
