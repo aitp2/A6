@@ -113,7 +113,16 @@ public class DigitalController {
 			}
     	}
     }
-    
+    @GetMapping("/createDictionaryTag")
+    public void createDictionaryTag(){
+    	Map<String,List<String>> superTags = tagService.getDictionaryTag("/Users/accenture/Documents/2017-11AI-team/A6/data/sample");
+    	 for (Map.Entry<String,List<String>> entry : superTags.entrySet()) {
+			for(String subTagTitle: entry.getValue())
+			{
+				tagService.updateBelonToTag(subTagTitle,entry.getKey());
+			}
+    	}
+    }
     @GetMapping("/tag/by/{userId}/{objId}")
     public void updateHasTagBy(@PathVariable String userId,@PathVariable String objId){
         Employee employee = employeeRepository.findByObjId(userId);
@@ -128,6 +137,52 @@ public class DigitalController {
         hasTags.add(hasTag);
         employee.setHasTags(hasTags);
         employeeRepository.save(employee);
+    }
+    @GetMapping("/daminHasTag/invitation/{eventId}/{title}")
+    public void updatSmallInvitationnHasTag(@PathVariable String eventId,@PathVariable String title){
+        SmallInvitation smallInvitation = smallInvitationRepository.findByObjId(eventId);
+        if(smallInvitation == null){
+            return;
+        }
+        List<DaminHasTag> daminHasTags = smallInvitation.getDaminHasTag()==null?new ArrayList<>():smallInvitation.getDaminHasTag();
+        Tag tag = tagsRepository.findByTitle(title);
+        DaminHasTag daminHasTag = new DaminHasTag();
+        daminHasTag.setTag(tag);
+        daminHasTag.setDomainEvent(smallInvitation);
+        daminHasTags.add(daminHasTag);
+        smallInvitation.setDaminHasTag(daminHasTags);
+        smallInvitationRepository.save(smallInvitation);
+    }
+    @GetMapping("/daminHasTag/objective/{eventId}/{title}")
+    public void updatObjectiveInvitationnHasTag(@PathVariable String eventId,@PathVariable String title){
+    	
+        SmallObjective smallObjective = smallObjectiveRepository.findByObjId(eventId);
+        if(smallObjective == null){
+            return;
+        }
+        List<DaminHasTag> daminHasTags = smallObjective.getDaminHasTag()==null?new ArrayList<>():smallObjective.getDaminHasTag();
+        Tag tag = tagsRepository.findByTitle(title);
+        DaminHasTag daminHasTag = new DaminHasTag();
+        daminHasTag.setTag(tag);
+        daminHasTag.setDomainEvent(smallObjective);
+        daminHasTags.add(daminHasTag);
+        smallObjective.setDaminHasTag(daminHasTags);
+        smallObjectiveRepository.save(smallObjective);
+    }
+    @GetMapping("/daminHasTag/comments/{eventId}/{title}")
+    public void updatCommentsHasTag(@PathVariable String eventId,@PathVariable String title){
+    	Comment comment = commentRepository.findByObjId(eventId);
+        if(comment == null){
+            return;
+        }
+//        List<DaminHasTag> daminHasTags = comment.getDaminHasTag()==null?new ArrayList<>():comment.getDaminHasTag();
+//        Tag tag = tagsRepository.findByTitle(title);
+//        DaminHasTag daminHasTag = new DaminHasTag();
+//        daminHasTag.setTag(tag);
+//        daminHasTag.setStartNode(comment);
+//        daminHasTags.add(daminHasTag);
+//        comment.setDaminHasTag(daminHasTags);
+//        commentRepository.save(comment);
     }
     @GetMapping("/tag/belonTo/{subTag}/{superTag}")
     public void updateBelonToTag(@PathVariable String subTag,@PathVariable String superTag){

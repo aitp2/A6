@@ -1,5 +1,6 @@
 package com.hankcs.example.aitp;
 
+import com.hankcs.a6.DemoA6Poc;
 import com.hankcs.example.aitp.util.HttpUtil;
 import com.hankcs.example.util.JDBCUtil;
 import org.neo4j.driver.internal.shaded.io.netty.util.internal.StringUtil;
@@ -10,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,9 +42,10 @@ public class RelationshipExtract {
 
     private static final BASE64Decoder decoder = new BASE64Decoder();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         try (Connection conn = JDBCUtil.getConn("dlife2")) {
             Statement statement = conn.createStatement();
+            extractDemainTag(statement);
             extractLaunch(statement);
             extractEdrect(statement);
             extractCommentBy(statement);
@@ -53,7 +56,17 @@ public class RelationshipExtract {
             e.printStackTrace();
         }
     }
-
+    private static void extractDemainTag(Statement statement) throws SQLException, IOException {
+        ResultSet pinfan = statement.executeQuery(PIN_FAN_ACTIVITY);
+        List<Map<String, String>> pinfanList = JDBCUtil.extract(pinfan);
+        for(Map<String,String> map:pinfanList){
+        	for(String title:DemoA6Poc.getLabel(map.get("descrption")))
+        	{
+        		HttpUtil.get("http://localhost:8080/api/daminHasTag/invitation/"+map.get("id")+"/"+title);
+        	}
+        	
+        }
+    }
     private static void extractCommentBy(Statement statement) throws SQLException {
         ResultSet resultSet = statement.executeQuery(COMMENT);
         List<Map<String, String>> resultList = JDBCUtil.extract(resultSet);

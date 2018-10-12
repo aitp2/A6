@@ -5,6 +5,7 @@ import java.util.*;
 import movies.spring.data.neo4j.digital.domain.Tag;
 import movies.spring.data.neo4j.digital.domain.relationship.BelonTo;
 import movies.spring.data.neo4j.repositories.TagsRepository;
+import movies.spring.data.neo4j.util.readFileUtile;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,4 +44,9 @@ public class TagService {
         subTagNode.setBelonTo(belonTos);
         tagsRepository.save(subTagNode);
     }
+   
+   public Map<String,List<String>> getDictionaryTag(String filrPath)
+   {
+	   return readFileUtile.readLine(filrPath);
+   }
 }

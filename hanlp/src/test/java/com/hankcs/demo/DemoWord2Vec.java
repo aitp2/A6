@@ -10,6 +10,7 @@
  */
 package com.hankcs.demo;
 
+import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.corpus.io.IOUtil;
 import com.hankcs.hanlp.mining.word2vec.DocVectorModel;
 import com.hankcs.hanlp.mining.word2vec.Word2VecTrainer;
@@ -17,6 +18,7 @@ import com.hankcs.hanlp.mining.word2vec.WordVectorModel;
 import com.hankcs.hanlp.utility.TestUtility;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,32 +34,64 @@ public class DemoWord2Vec
     public static void main(String[] args) throws IOException
     {
         WordVectorModel wordVectorModel = trainOrLoadModel();
-        printNearest("世界杯", wordVectorModel);
-        printNearest("美丽", wordVectorModel);
-        printNearest("购买", wordVectorModel);
+        String[] documents = new String[]{
+                "拼咖啡省运费，2人成团！",
+                "狼人杀桌游回归啦！	还在为找不到队友而烦恼吗？",
+                "世界杯决赛之夜	世界杯决赛夜，巅峰对决！让我们一起见证这荣耀时刻！",
+                "欧莱雅洗面奶	全新未拆封，正品",
+                "区块链想必大家早有耳闻，那么区块链是什么？有什么用？前景如何呢？",
+            };
+        
+        List<String> keywordList = HanLP.extractKeyword(documents[2], 10);
+        System.out.println(keywordList);
+        DocVectorModel docVectorModel = new DocVectorModel(wordVectorModel);
+      for (int i = 0; i < documents.length; i++)
+      {
+          docVectorModel.addDocument(i, documents[i]);
+      }
+        for(String key :keywordList)
+        {
+        	System.out.println("\n                                                Word     "+key);
+            for (Map.Entry<String, Float> entry : wordVectorModel.nearest(key))
+            {
+                System.out.printf("%50s\t\t%f\n", entry.getKey(), entry.getValue());
+                printNearestDocument(entry.getKey(), documents, docVectorModel);
+            }
+        }
+        
+//        for(String doc:documents)
+//        {
+//        	List<String> keywordList = HanLP.extractKeyword(doc, 10);
+//            System.out.println(keywordList);
+//            for(String key :keywordList)
+//            {
+//            	System.out.println("\n                                                Word     "+key);
+//            	printNearest(key, wordVectorModel);
+//            }
+//        }
+        
+
+        
+//        printNearest("美丽", wordVectorModel);
+//        printNearest("购买", wordVectorModel);
 
         // 文档向量
-        DocVectorModel docVectorModel = new DocVectorModel(wordVectorModel);
-        String[] documents = new String[]{
-            "山东苹果丰收",
-            "农民在江苏种水稻",
-            "奥运会女排夺冠",
-            "世界锦标赛胜出",
-            "中国足球失败",
-        };
+//        DocVectorModel docVectorModel = new DocVectorModel(wordVectorModel);
+//
+//
+//        System.out.println(docVectorModel.similarity(documents[0], documents[1]));
+//        System.out.println(docVectorModel.similarity(documents[0], documents[4]));
+//
+//        for (int i = 0; i < documents.length; i++)
+//        {
+//            docVectorModel.addDocument(i, documents[i]);
+//        }
 
-        System.out.println(docVectorModel.similarity(documents[0], documents[1]));
-        System.out.println(docVectorModel.similarity(documents[0], documents[4]));
-
-        for (int i = 0; i < documents.length; i++)
-        {
-            docVectorModel.addDocument(i, documents[i]);
-        }
-
-        printNearestDocument("体育", documents, docVectorModel);
-        printNearestDocument("农业", documents, docVectorModel);
-        printNearestDocument("我要看比赛", documents, docVectorModel);
-        printNearestDocument("要不做饭吧", documents, docVectorModel);
+//        printNearestDocument("体育", documents, docVectorModel);
+//        printNearestDocument("农业", documents, docVectorModel);
+//        printNearestDocument("购物", documents, docVectorModel);
+//        printNearestDocument("我要看比赛", documents, docVectorModel);
+//        printNearestDocument("要不做饭吧", documents, docVectorModel);
     }
 
     static void printNearest(String word, WordVectorModel model)

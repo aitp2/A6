@@ -1,6 +1,8 @@
 package movies.spring.data.neo4j.digital.domain;
 
 import movies.spring.data.neo4j.digital.domain.relationship.Commented;
+import movies.spring.data.neo4j.digital.domain.relationship.DaminHasTag;
+
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -22,7 +24,18 @@ public class SmallInvitation extends DomainEvent{
     @Relationship(type = "COMMENTED",direction = "INCOMING")
     private List<Commented> commented;
 
-    private String title;
+    @Relationship(type = "Has_Domian_Tag",direction = "INCOMING")
+    private List<DaminHasTag> daminHasTag;
+    
+    public List<DaminHasTag> getDaminHasTag() {
+		return daminHasTag;
+	}
+
+	public void setDaminHasTag(List<DaminHasTag> daminHasTag) {
+		this.daminHasTag = daminHasTag;
+	}
+
+	private String title;
 
     private BigDecimal budget;
 

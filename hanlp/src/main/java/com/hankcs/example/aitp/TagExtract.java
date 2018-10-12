@@ -110,13 +110,21 @@ public class TagExtract {
     			}
     			else
     			{
-    				tags.put(tag, String.valueOf(objId));
-    	            Tag tagDate = new Tag();
-    	            tagDate.setTitle(tag);
-    	            tagDate.setObjId(String.valueOf(objId));
-    	            HttpUtil.post("Http://localhost:8080/api/tag",tagDate);
-    	            HttpUtil.get("http://localhost:8080/api/tag/by/"+key.replaceAll("\"", "")+"/"+String.valueOf(objId));
-    	            objId++;
+    				String objectID = HttpUtil.get("http://localhost:8080/api/tag/"+tag);
+    				if(!StringUtil.isNullOrEmpty(objectID))
+    				{
+    					HttpUtil.get("http://localhost:8080/api/tag/by/"+key.replaceAll("\"", "")+"/"+objectID);
+    				}
+    				else
+    				{
+        				tags.put(tag, String.valueOf(objId));
+        	            Tag tagDate = new Tag();
+        	            tagDate.setTitle(tag);
+        	            tagDate.setObjId(String.valueOf(objId));
+        	            HttpUtil.post("Http://localhost:8080/api/tag",tagDate);
+        	            HttpUtil.get("http://localhost:8080/api/tag/by/"+key.replaceAll("\"", "")+"/"+String.valueOf(objId));
+        	            objId++;	
+    				}
     			}
     		}
     	}
