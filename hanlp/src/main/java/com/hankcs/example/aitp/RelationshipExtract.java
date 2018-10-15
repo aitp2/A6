@@ -66,6 +66,24 @@ public class RelationshipExtract {
         	}
         	
         }
+        ResultSet objectives = statement.executeQuery(FITNESS_ACTIVITY);
+        List<Map<String, String>> objectivesList = JDBCUtil.extract(objectives);
+        for(Map<String,String> map:objectivesList){
+        	for(String title:DemoA6Poc.getLabel(map.get("descrption")))
+        	{
+        		HttpUtil.get("http://localhost:8080/api/daminHasTag/objective/"+map.get("id")+"/"+title);
+        	}
+        	
+        }
+        ResultSet comments = statement.executeQuery(COMMENT);
+        List<Map<String, String>> commentsList = JDBCUtil.extract(comments);
+        for(Map<String,String> map:commentsList){
+        	for(String title:DemoA6Poc.getLabel(map.get("content")))
+        	{
+        		HttpUtil.get("http://localhost:8080/api/daminHasTag/comments/"+map.get("id")+"/"+title);
+        	}
+        	
+        }
     }
     private static void extractCommentBy(Statement statement) throws SQLException {
         ResultSet resultSet = statement.executeQuery(COMMENT);

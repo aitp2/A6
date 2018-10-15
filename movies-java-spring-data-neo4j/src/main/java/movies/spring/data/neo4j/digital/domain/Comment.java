@@ -5,6 +5,7 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
+import movies.spring.data.neo4j.digital.domain.relationship.CommentHasTag;
 import movies.spring.data.neo4j.digital.domain.relationship.DaminHasTag;
 
 import java.time.Instant;
@@ -24,15 +25,15 @@ public class Comment {
 
     private String objId;
 
-    @Relationship(type = "Has_Domian_Tag",direction = "INCOMING")
-    private List<DaminHasTag> daminHasTag;
+    @Relationship(type = "Has_Comment_Tag",direction = "INCOMING")
+    private List<CommentHasTag> commentHasTag;
     
-    public List<DaminHasTag> getDaminHasTag() {
-		return daminHasTag;
+    public List<CommentHasTag> getCommentHasTag() {
+		return commentHasTag;
 	}
 
-	public void setDaminHasTag(List<DaminHasTag> daminHasTag) {
-		this.daminHasTag = daminHasTag;
+	public void setCommentHasTag(List<CommentHasTag> commentHasTag) {
+		this.commentHasTag = commentHasTag;
 	}
 	
     public Long getId() {

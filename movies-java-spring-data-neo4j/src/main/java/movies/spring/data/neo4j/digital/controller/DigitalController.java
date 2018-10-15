@@ -175,14 +175,14 @@ public class DigitalController {
         if(comment == null){
             return;
         }
-//        List<DaminHasTag> daminHasTags = comment.getDaminHasTag()==null?new ArrayList<>():comment.getDaminHasTag();
-//        Tag tag = tagsRepository.findByTitle(title);
-//        DaminHasTag daminHasTag = new DaminHasTag();
-//        daminHasTag.setTag(tag);
-//        daminHasTag.setStartNode(comment);
-//        daminHasTags.add(daminHasTag);
-//        comment.setDaminHasTag(daminHasTags);
-//        commentRepository.save(comment);
+        List<CommentHasTag> commentHasTags = comment.getCommentHasTag()==null?new ArrayList<>():comment.getCommentHasTag();
+        Tag tag = tagsRepository.findByTitle(title);
+        CommentHasTag commentHasTag = new CommentHasTag();
+        commentHasTag.setTag(tag);
+        commentHasTag.setComment(comment);
+        commentHasTags.add(commentHasTag);
+        comment.setCommentHasTag(commentHasTags);
+        commentRepository.save(comment);
     }
     @GetMapping("/tag/belonTo/{subTag}/{superTag}")
     public void updateBelonToTag(@PathVariable String subTag,@PathVariable String superTag){

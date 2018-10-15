@@ -27,6 +27,7 @@ public class TagService {
     	Tag subTagNode = tagsRepository.findByTitle(subTagTitle);
         if(subTagNode==null){
         	subTagNode = new Tag();
+        	subTagNode.setObjId(UUID.randomUUID().toString().replace("-", "").toLowerCase());
         	subTagNode.setTitle(subTagTitle);
         	tagsRepository.save(subTagNode);
         }
@@ -34,6 +35,7 @@ public class TagService {
         Tag superTagNode = tagsRepository.findByTitle(superTagTitle);
         if(superTagNode==null){
         	superTagNode = new Tag();
+        	superTagNode.setObjId(UUID.randomUUID().toString().replace("-", "").toLowerCase());
         	superTagNode.setTitle(superTagTitle);
         	tagsRepository.save(superTagNode);
         }

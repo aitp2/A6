@@ -76,15 +76,15 @@ public class TagExtract {
     		}
         }
         
-        ResultSet question = statement.executeQuery(QUESTION);
-        List<Map<String, String>> questionList = JDBCUtil.extract(question);
-        for(Map<String,String> map:questionList){
-			if(labelMap.get(map.get("wechat_user_id")) == null && map.get("descrption") != null) {
-    			labelMap.put(map.get("wechat_user_id"),  DemoA6Poc.getLabel(map.get("descrption")));
-    		}else if(map.get("descrption") != null){
-    			labelMap.get(map.get("wechat_user_id")).addAll( DemoA6Poc.getLabel(map.get("descrption")));
-    		}
-        }
+//        ResultSet question = statement.executeQuery(QUESTION);
+//        List<Map<String, String>> questionList = JDBCUtil.extract(question);
+//        for(Map<String,String> map:questionList){
+//			if(labelMap.get(map.get("wechat_user_id")) == null && map.get("descrption") != null) {
+//    			labelMap.put(map.get("wechat_user_id"),  DemoA6Poc.getLabel(map.get("descrption")));
+//    		}else if(map.get("descrption") != null){
+//    			labelMap.get(map.get("wechat_user_id")).addAll( DemoA6Poc.getLabel(map.get("descrption")));
+//    		}
+//        }
         
         ResultSet comment = statement.executeQuery(COMMENT);
         List<Map<String, String>> commentList = JDBCUtil.extract(comment);
@@ -104,28 +104,25 @@ public class TagExtract {
     	Map<String, String> tags = new HashMap<String, String>(); 
     	for(String key:labelMap.keySet()) {
     		for(String tag:labelMap.get(key)) {
-    			if(tags.containsKey(tag))
-    			{
-    				HttpUtil.get("http://localhost:8080/api/tag/by/"+key.replaceAll("\"", "")+"/"+tags.get(tag));
-    			}
-    			else
-    			{
-    				String objectID = HttpUtil.get("http://localhost:8080/api/tag/"+tag);
-    				if(!StringUtil.isNullOrEmpty(objectID))
-    				{
-    					HttpUtil.get("http://localhost:8080/api/tag/by/"+key.replaceAll("\"", "")+"/"+objectID);
-    				}
-    				else
-    				{
-        				tags.put(tag, String.valueOf(objId));
-        	            Tag tagDate = new Tag();
-        	            tagDate.setTitle(tag);
-        	            tagDate.setObjId(String.valueOf(objId));
-        	            HttpUtil.post("Http://localhost:8080/api/tag",tagDate);
-        	            HttpUtil.get("http://localhost:8080/api/tag/by/"+key.replaceAll("\"", "")+"/"+String.valueOf(objId));
-        	            objId++;	
-    				}
-    			}
+//    			if(tags.containsKey(tag))
+//    			{
+//    				HttpUtil.get("http://localhost:8080/api/tag/by/"+key.replaceAll("\"", "")+"/"+tags.get(tag));
+//    			}
+				String objectID = HttpUtil.get("http://localhost:8080/api/tag/"+tag);
+				if(!StringUtil.isNullOrEmpty(objectID))
+				{
+					HttpUtil.get("http://localhost:8080/api/tag/by/"+key.replaceAll("\"", "")+"/"+objectID);
+				}
+				else
+				{
+    				tags.put(tag, String.valueOf(objId));
+    	            Tag tagDate = new Tag();
+    	            tagDate.setTitle(tag);
+    	            tagDate.setObjId(String.valueOf(objId));
+    	            HttpUtil.post("Http://localhost:8080/api/tag",tagDate);
+    	            HttpUtil.get("http://localhost:8080/api/tag/by/"+key.replaceAll("\"", "")+"/"+String.valueOf(objId));
+    	            objId++;	
+				}
     		}
     	}
     }
