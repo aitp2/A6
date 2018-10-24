@@ -1,5 +1,6 @@
 package movies.spring.data.neo4j.digital.controller;
 
+import movies.spring.data.neo4j.data.KeywordsCoefficientdata;
 import movies.spring.data.neo4j.digital.domain.*;
 import movies.spring.data.neo4j.digital.domain.relationship.*;
 import movies.spring.data.neo4j.repositories.*;
@@ -96,6 +97,12 @@ public class DigitalController {
     	}
     	return null;
     }
+    
+    @GetMapping("/getCoefficientDataByTag/{title}")
+    public KeywordsCoefficientdata getCoefficientDataByTag(@PathVariable String title){
+    	return tagService.getKeywordsCoefficientdataByKeyword(title);
+    }
+    
     @GetMapping("/sampleTag")
     public void createSampleTag(){
     	Map<String,List<String>> superTags = new HashMap<String,List<String>>();
@@ -146,12 +153,15 @@ public class DigitalController {
         }
         List<DaminHasTag> daminHasTags = smallInvitation.getDaminHasTag()==null?new ArrayList<>():smallInvitation.getDaminHasTag();
         Tag tag = tagsRepository.findByTitle(title);
-        DaminHasTag daminHasTag = new DaminHasTag();
-        daminHasTag.setTag(tag);
-        daminHasTag.setDomainEvent(smallInvitation);
-        daminHasTags.add(daminHasTag);
-        smallInvitation.setDaminHasTag(daminHasTags);
-        smallInvitationRepository.save(smallInvitation);
+    	if(null != tag)
+    	{
+	        DaminHasTag daminHasTag = new DaminHasTag();
+	        daminHasTag.setTag(tag);
+	        daminHasTag.setDomainEvent(smallInvitation);
+	        daminHasTags.add(daminHasTag);
+	        smallInvitation.setDaminHasTag(daminHasTags);
+	        smallInvitationRepository.save(smallInvitation);
+    	}
     }
     @GetMapping("/daminHasTag/objective/{eventId}/{title}")
     public void updatObjectiveInvitationnHasTag(@PathVariable String eventId,@PathVariable String title){
@@ -162,12 +172,15 @@ public class DigitalController {
         }
         List<DaminHasTag> daminHasTags = smallObjective.getDaminHasTag()==null?new ArrayList<>():smallObjective.getDaminHasTag();
         Tag tag = tagsRepository.findByTitle(title);
-        DaminHasTag daminHasTag = new DaminHasTag();
-        daminHasTag.setTag(tag);
-        daminHasTag.setDomainEvent(smallObjective);
-        daminHasTags.add(daminHasTag);
-        smallObjective.setDaminHasTag(daminHasTags);
-        smallObjectiveRepository.save(smallObjective);
+    	if(null != tag)
+    	{
+	        DaminHasTag daminHasTag = new DaminHasTag();
+	        daminHasTag.setTag(tag);
+	        daminHasTag.setDomainEvent(smallObjective);
+	        daminHasTags.add(daminHasTag);
+	        smallObjective.setDaminHasTag(daminHasTags);
+	        smallObjectiveRepository.save(smallObjective);
+    	}
     }
     @GetMapping("/daminHasTag/comments/{eventId}/{title}")
     public void updatCommentsHasTag(@PathVariable String eventId,@PathVariable String title){
@@ -177,12 +190,15 @@ public class DigitalController {
         }
         List<CommentHasTag> commentHasTags = comment.getCommentHasTag()==null?new ArrayList<>():comment.getCommentHasTag();
         Tag tag = tagsRepository.findByTitle(title);
-        CommentHasTag commentHasTag = new CommentHasTag();
-        commentHasTag.setTag(tag);
-        commentHasTag.setComment(comment);
-        commentHasTags.add(commentHasTag);
-        comment.setCommentHasTag(commentHasTags);
-        commentRepository.save(comment);
+    	if(null != tag)
+    	{
+	        CommentHasTag commentHasTag = new CommentHasTag();
+	        commentHasTag.setTag(tag);
+	        commentHasTag.setComment(comment);
+	        commentHasTags.add(commentHasTag);
+	        comment.setCommentHasTag(commentHasTags);
+	        commentRepository.save(comment);
+    	}
     }
     @GetMapping("/tag/belonTo/{subTag}/{superTag}")
     public void updateBelonToTag(@PathVariable String subTag,@PathVariable String superTag){

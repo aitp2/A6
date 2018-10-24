@@ -1,5 +1,6 @@
 package com.hankcs.example.aitp;
 
+import com.baidu.aip.nlp.AipNlp;
 import com.hankcs.a6.DemoA6Poc;
 import com.hankcs.example.aitp.util.HttpUtil;
 import com.hankcs.example.util.JDBCUtil;
@@ -44,8 +45,11 @@ public class RelationshipExtract {
 
     public static void main(String[] args) throws IOException {
         try (Connection conn = JDBCUtil.getConn("dlife2")) {
+            AipNlp client = new AipNlp(TagExtract.APP_ID, TagExtract.API_KEY, TagExtract.SECRET_KEY);
+            client.setConnectionTimeoutInMillis(2000);
+            client.setSocketTimeoutInMillis(60000);
             Statement statement = conn.createStatement();
-            extractDemainTag(statement);
+            extractDemainTag(statement,client);
             extractLaunch(statement);
             extractEdrect(statement);
             extractCommentBy(statement);
@@ -56,11 +60,11 @@ public class RelationshipExtract {
             e.printStackTrace();
         }
     }
-    private static void extractDemainTag(Statement statement) throws SQLException, IOException {
+    private static void extractDemainTag(Statement statement,AipNlp client) throws SQLException, IOException {
         ResultSet pinfan = statement.executeQuery(PIN_FAN_ACTIVITY);
         List<Map<String, String>> pinfanList = JDBCUtil.extract(pinfan);
         for(Map<String,String> map:pinfanList){
-        	for(String title:DemoA6Poc.getLabel(map.get("descrption")))
+        	for(String title:TagExtract.allTagAPI(map.get("activitiy_tile"),map.get("descrption"),client))
         	{
         		HttpUtil.get("http://localhost:8080/api/daminHasTag/invitation/"+map.get("id")+"/"+title);
         	}
@@ -69,7 +73,7 @@ public class RelationshipExtract {
         ResultSet objectives = statement.executeQuery(FITNESS_ACTIVITY);
         List<Map<String, String>> objectivesList = JDBCUtil.extract(objectives);
         for(Map<String,String> map:objectivesList){
-        	for(String title:DemoA6Poc.getLabel(map.get("descrption")))
+        	for(String title:TagExtract.allTagAPI(map.get("title"),map.get("descrption"),client))
         	{
         		HttpUtil.get("http://localhost:8080/api/daminHasTag/objective/"+map.get("id")+"/"+title);
         	}
@@ -78,7 +82,7 @@ public class RelationshipExtract {
         ResultSet comments = statement.executeQuery(COMMENT);
         List<Map<String, String>> commentsList = JDBCUtil.extract(comments);
         for(Map<String,String> map:commentsList){
-        	for(String title:DemoA6Poc.getLabel(map.get("content")))
+        	for(String title:TagExtract.allTagAPI("",map.get("content"),client))
         	{
         		HttpUtil.get("http://localhost:8080/api/daminHasTag/comments/"+map.get("id")+"/"+title);
         	}

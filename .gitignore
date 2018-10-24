@@ -35,3 +35,5 @@ data/model/*
 # 配置文件等（资源文件统一放到data）
 src/main/resources/
 /bin/
+
+/hanlp/data/dictionary/CoreNatureDictionary.ngram.txt
