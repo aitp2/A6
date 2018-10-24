@@ -41,11 +41,16 @@ public class HttpUtil {
         try (CloseableHttpClient client = HttpClients.createDefault()){
             HttpGet get= new HttpGet(url);
             CloseableHttpResponse response =client.execute(get);
-			HttpEntity entity = response.getEntity();
-			if (entity != null) {
-				result = EntityUtils.toString(entity);
-				EntityUtils.consume(entity);
-			}
+			try {
+				HttpEntity entity = response.getEntity();
+				if (entity != null) {
+					result = EntityUtils.toString(entity, "UTF-8");
+					EntityUtils.consume(entity);
+				}
+		    } finally {
+		    	response.close();
+		    
+		    }
         } catch (IOException e) {
             e.printStackTrace();
         }
