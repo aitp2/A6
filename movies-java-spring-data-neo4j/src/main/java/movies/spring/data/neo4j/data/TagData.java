@@ -6,6 +6,8 @@ public class TagData {
     private String title;
     private String objId;
     private String emotion;
+    private String level;
+    
 	public Long getId() {
 		return id;
 	}
@@ -29,5 +31,11 @@ public class TagData {
 	}
 	public void setEmotion(String emotion) {
 		this.emotion = emotion;
+	}
+	public String getLevel() {
+		return level;
+	}
+	public void setLevel(String level) {
+		this.level = level;
 	}
 }

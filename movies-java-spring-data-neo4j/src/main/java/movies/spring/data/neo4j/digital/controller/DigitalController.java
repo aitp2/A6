@@ -18,6 +18,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.Comparator;
 
 /**
@@ -140,6 +141,28 @@ public class DigitalController {
         Tag tag = tagsRepository.findByObjId(objId);
         HasTag hasTag = new HasTag();
         hasTag.setTag(tag);
+        hasTag.setEmployee(employee);
+        hasTags.add(hasTag);
+        employee.setHasTags(hasTags);
+        employeeRepository.save(employee);
+    }
+    @PostMapping("/CreateL2Tag")
+    public void CreateL2Tag(@RequestParam String custmerId,@RequestParam String tag){
+        Employee employee = employeeRepository.findByObjId(custmerId);
+        if(employee==null){
+            return;
+        }
+        List<HasTag> hasTags = employee.getHasTags()==null?new ArrayList<>():employee.getHasTags();
+        Tag tagNode = tagsRepository.findByTitle(tag);
+        if(tagNode==null){
+        	tagNode= new Tag();
+        	tagNode.setLevel("2");
+        	tagNode.setObjId(UUID.randomUUID().toString().replace("-", "").toLowerCase());
+        	tagNode.setTitle(tag);
+        	tagsRepository.save(tagNode);
+        }
+        HasTag hasTag = new HasTag();
+        hasTag.setTag(tagNode);
         hasTag.setEmployee(employee);
         hasTags.add(hasTag);
         employee.setHasTags(hasTags);

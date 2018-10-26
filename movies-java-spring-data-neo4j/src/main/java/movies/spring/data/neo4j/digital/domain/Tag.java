@@ -20,6 +20,7 @@ public class Tag {
     private String title;
     private String objId;
     private String emotion;
+    private String level;
     
     @Relationship(type = "BELON_TO", direction ="UNDIRECTED")
     private List<BelonTo> belonTo;
@@ -62,5 +63,13 @@ public class Tag {
 
 	public void setEmotion(String emotion) {
 		this.emotion = emotion;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
 	}
 }

@@ -15,6 +15,14 @@ public class KeywordsCoefficientdata {
 	private int commentCount;
 
 	private int checkinCount;
+	
+	private int[] publishArray;
+	
+	private int[] attendArray;
+	
+	private int[] commentArray;
+
+	private int[] checkinArray;
 
 	public TagData getTagData() {
 		return tagData;
@@ -62,6 +70,38 @@ public class KeywordsCoefficientdata {
 
 	public void setCheckinCount(int checkinCount) {
 		this.checkinCount = checkinCount;
+	}
+
+	public int[] getPublishArray() {
+		return publishArray;
+	}
+
+	public void setPublishArray(int[] publishArray) {
+		this.publishArray = publishArray;
+	}
+
+	public int[] getAttendArray() {
+		return attendArray;
+	}
+
+	public void setAttendArray(int[] attendArray) {
+		this.attendArray = attendArray;
+	}
+
+	public int[] getCommentArray() {
+		return commentArray;
+	}
+
+	public void setCommentArray(int[] commentArray) {
+		this.commentArray = commentArray;
+	}
+
+	public int[] getCheckinArray() {
+		return checkinArray;
+	}
+
+	public void setCheckinArray(int[] checkinArray) {
+		this.checkinArray = checkinArray;
 	}
 
 

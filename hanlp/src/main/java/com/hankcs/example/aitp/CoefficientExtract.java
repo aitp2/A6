@@ -57,13 +57,11 @@ public class CoefficientExtract {
     private static void extractCoefficient(PreparedStatement statement,AipNlp client) throws SQLException, IOException {
     	
     	Map<String,List<String>> superTags = new HashMap<String,List<String>>();
-    	superTags.put("饮料", Arrays.asList(new String[]{"椰肉","椰汁","鲜奶","奶茶","椰子","夏日清","红茶","茶","喝酒","眷村","咖啡","星冰乐","果蔬汁"}));
-    	superTags.put("食物", Arrays.asList(new String[]{"饮料","糖","芋头","冰无糖","芋","紫米","早饭","海盐","火锅","焦糖","主食","面","雪糕","炒米粉","果冻","凉粉","啤酒鸭","火龙果","豆腐","香草","小食","鱼蛋","龟苓膏","螃蟹","奶昔","海鲜"}));
-    	superTags.put("宠物", Arrays.asList(new String[]{"狗","边牧","猫","鸡","海鸥","云吸宠","天鹅"}));
-    	superTags.put("建筑", Arrays.asList(new String[]{"寺庙","庙"}));
-    	superTags.put("体育", Arrays.asList(new String[]{"看球","跳伞","篮球","平板","球衣","台球","球衣","健身房","蹦床"}));
-    	superTags.put("娱乐", Arrays.asList(new String[]{"跳伞","电视","音乐","逛街","电影","书","露营","旅途","杀人","蹦床"}));
-    	superTags.put("音乐", Arrays.asList(new String[]{"二胡","歌曲","歌","乐器","歌单","单曲","首歌"}));
+    	superTags.put("饮料", Arrays.asList(new String[]{"椰肉","椰汁","鲜奶","奶茶","椰子","红茶","茶","喝酒","眷村","咖啡","星冰乐","果蔬汁"}));
+    	superTags.put("食物", Arrays.asList(new String[]{"饮料","糖","芋头","芋","紫米","早饭","海盐","火锅","焦糖","雪糕","炒米粉","果冻","凉粉","啤酒鸭","火龙果","豆腐","香草","小食","鱼蛋","龟苓膏","螃蟹","奶昔","海鲜"}));
+    	superTags.put("体育", Arrays.asList(new String[]{"看球","跳伞","篮球","球衣","台球","球衣","健身房","蹦床"}));
+    	superTags.put("娱乐", Arrays.asList(new String[]{"跳伞","电视","音乐","逛街","电影","书","露营","杀人","蹦床"}));
+    	superTags.put("音乐", Arrays.asList(new String[]{"二胡","歌曲","乐器","歌单"}));
     	
     	 for (Map.Entry<String,List<String>> entry : superTags.entrySet()) {
 			for(String subTagTitle: entry.getValue())

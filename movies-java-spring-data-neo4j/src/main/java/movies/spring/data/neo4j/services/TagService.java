@@ -41,6 +41,7 @@ public class TagService {
 		getPublishActive(keywordsCoefficientdata);
 		getAttendActive(keywordsCoefficientdata);
 		getCommentActive(keywordsCoefficientdata);
+		createPublishActive(keywordsCoefficientdata);
 		getComplexAttendScale(keywordsCoefficientdata);
 		return keywordsCoefficientdata;
 	}
@@ -81,8 +82,10 @@ public class TagService {
 		   List<Employee> employees = employeeRepository.findEmloyeeCommentDomainByKeywrods(title);
 		   if(!CollectionUtils.isEmpty(employees))
 		   {
-			   for(Employee employee : employees)
+			   int[] arr = new int[employees.size()];
+			   for(int i = 0;i< employees.size();i++)
 			   {
+				   Employee employee = employees.get(i);
 				   if(!CollectionUtils.isEmpty(keywordsCoefficientdata.getKeywordsEmployeedatas()))
 				   {
 					   for(KeywordsEmployeedata keywordsEmployeedata : keywordsCoefficientdata.getKeywordsEmployeedatas())
@@ -91,8 +94,9 @@ public class TagService {
 						   {
 							   int employeeCount = employeeRepository.findEmloyeeCommentDomainCountByKE(title, employee.getId());
 							   keywordsEmployeedata.setCommentCount(employeeCount);
-							   double commentActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getCommentCount());
-							   keywordsEmployeedata.setCommentActive(commentActive);
+							   arr[i]=employeeCount;
+//							   double commentActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getCommentCount());
+//							   keywordsEmployeedata.setCommentActive(commentActive);
 						   }
 						   else
 						   {
@@ -106,6 +110,8 @@ public class TagService {
 					   createNewEmpoyee4CA(employee,keywordsCoefficientdata);
 				   }
 			   } 
+			   Arrays.sort(arr);
+			   keywordsCoefficientdata.setCommentArray(arr);
 		   }
 	}
 	
@@ -119,8 +125,8 @@ public class TagService {
 		   int employeeCount = employeeRepository.findEmloyeeCommentDomainCountByKE(keywordsCoefficientdata.getTagData().getTitle(), employee.getId());
 		   newKeywordsEmployeedata.setEmployeeData(newEmployeeData);
 		   newKeywordsEmployeedata.setCommentCount(employeeCount);
-		   double commentActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getCommentCount());
-		   newKeywordsEmployeedata.setCommentActive(commentActive);
+//		   double commentActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getCommentCount());
+//		   newKeywordsEmployeedata.setCommentActive(commentActive);
 		   if(CollectionUtils.isEmpty(keywordsCoefficientdata.getKeywordsEmployeedatas()))
 		   {
 			   ArrayList<KeywordsEmployeedata> keywordsEmployeedatas = new ArrayList<KeywordsEmployeedata>();
@@ -141,8 +147,10 @@ public class TagService {
 	   List<Employee> employees = employeeRepository.findEmloyeeAttendDomainByKeywrods(title);
 	   if(!CollectionUtils.isEmpty(employees))
 	   {
-		   for(Employee employee : employees)
+		   int[] arr = new int[employees.size()];
+		   for(int i = 0;i< employees.size();i++)
 		   {
+			   Employee employee = employees.get(i);
 			   if(!CollectionUtils.isEmpty(keywordsCoefficientdata.getKeywordsEmployeedatas()))
 			   {
 				   for(KeywordsEmployeedata keywordsEmployeedata : keywordsCoefficientdata.getKeywordsEmployeedatas())
@@ -151,8 +159,9 @@ public class TagService {
 					   {
 						   int employeeCount = employeeRepository.findEmloyeeAttendDomainCountByKE(title, employee.getId());
 						   keywordsEmployeedata.setAttendCount(employeeCount);
-						   double attendActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getAttendCount());
-						   keywordsEmployeedata.setAttendActive(attendActive);
+						   arr[i]=employeeCount;
+//						   double attendActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getAttendCount());
+//						   keywordsEmployeedata.setAttendActive(attendActive);
 					   }
 					   else
 					   {
@@ -166,6 +175,8 @@ public class TagService {
 				   createNewEmpoyee4AA(employee,keywordsCoefficientdata);
 			   }
 		   } 
+		   Arrays.sort(arr);
+		   keywordsCoefficientdata.setAttendArray(arr);
 	   }
    }
    
@@ -179,8 +190,8 @@ public class TagService {
 	   int employeeCount = employeeRepository.findEmloyeeAttendDomainCountByKE(keywordsCoefficientdata.getTagData().getTitle(), employee.getId());
 	   newKeywordsEmployeedata.setEmployeeData(newEmployeeData);
 	   newKeywordsEmployeedata.setAttendCount(employeeCount);
-	   double attendActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getAttendCount());
-	   newKeywordsEmployeedata.setAttendActive(attendActive);
+//	   double attendActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getAttendCount());
+//	   newKeywordsEmployeedata.setAttendActive(attendActive);
 	   if(CollectionUtils.isEmpty(keywordsCoefficientdata.getKeywordsEmployeedatas()))
 	   {
 		   ArrayList<KeywordsEmployeedata> keywordsEmployeedatas = new ArrayList<KeywordsEmployeedata>();
@@ -201,18 +212,23 @@ public class TagService {
 	   List<Employee> employees = employeeRepository.findEmloyeePublishDomainByKeywrods(title);
 	   if(!CollectionUtils.isEmpty(employees))
 	   {
-		   for(Employee employee : employees)
+		   int[] arr = new int[employees.size()];
+		   for(int i = 0;i< employees.size();i++)
 		   {
+			   Employee employee = employees.get(i);
+			   int employeeCount = employeeRepository.findEmloyeePublishDomainCountByKE(title, employee.getId());
+			   arr[i]=employeeCount;
 			   if(!CollectionUtils.isEmpty(keywordsCoefficientdata.getKeywordsEmployeedatas()))
 			   {
 				   for(KeywordsEmployeedata keywordsEmployeedata : keywordsCoefficientdata.getKeywordsEmployeedatas())
 				   {
 					   if(employee.getId() == keywordsEmployeedata.getEmployeeData().getId())
 					   {
-						   int employeeCount = employeeRepository.findEmloyeePublishDomainCountByKE(title, employee.getId());
+//						   int employeeCount = employeeRepository.findEmloyeePublishDomainCountByKE(title, employee.getId());
+//						   arr[i]=employeeCount;
 						   keywordsEmployeedata.setPublishCount(employeeCount);
-						   double publishActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getPublishCount());
-						   keywordsEmployeedata.setPublishActive(publishActive);
+//						   double publishActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getPublishCount());
+//						   keywordsEmployeedata.setPublishActive(publishActive);
 					   }
 					   else
 					   {
@@ -225,7 +241,67 @@ public class TagService {
 			   {
 				   createNewEmpoyee4PA(employee,keywordsCoefficientdata);
 			   }
-		   } 
+		   }
+		   Arrays.sort(arr);
+		   keywordsCoefficientdata.setPublishArray(arr);
+	   }
+   }
+   
+   private void createPublishActive(KeywordsCoefficientdata keywordsCoefficientdata)
+   {
+	   if(!CollectionUtils.isEmpty(keywordsCoefficientdata.getKeywordsEmployeedatas()))
+	   {
+		   for(KeywordsEmployeedata keywordsEmployeedata : keywordsCoefficientdata.getKeywordsEmployeedatas())
+		   {
+			   int maxP = keywordsCoefficientdata.getPublishArray()[keywordsCoefficientdata.getPublishArray().length-1];
+			   int maxA = keywordsCoefficientdata.getAttendArray()[keywordsCoefficientdata.getAttendArray().length-1];
+			   int maxC = keywordsCoefficientdata.getCommentArray()[keywordsCoefficientdata.getCommentArray().length-1];
+			   int minP = keywordsCoefficientdata.getPublishArray()[0];
+			   int minA = keywordsCoefficientdata.getAttendArray()[0];
+			   int minC = keywordsCoefficientdata.getCommentArray()[0];
+			   int xP = keywordsEmployeedata.getPublishCount();
+			   int xA = keywordsEmployeedata.getAttendCount();
+			   int xC = keywordsEmployeedata.getCommentCount();
+			   if(xP==maxP)
+			   {
+				   keywordsEmployeedata.setPublishActive(1D);
+			   }
+			   else if(maxP==minP)
+			   {
+				   keywordsEmployeedata.setPublishActive(0D); 
+			   }
+			   else
+			   {
+				   double active = BigDecimalUtil.deciMal(xP-minP, maxP-minP);
+				   keywordsEmployeedata.setPublishActive(active);  
+			   }
+			   if(xA==maxA)
+			   {
+				   keywordsEmployeedata.setAttendActive(1D);
+			   }
+			   else if(maxA==minA)
+			   {
+				   keywordsEmployeedata.setPublishActive(0D); 
+			   }
+			   else
+			   {
+				   double active = BigDecimalUtil.deciMal(xA-minA, maxA-minA);
+				   keywordsEmployeedata.setAttendActive(active);  
+			   }
+			   if(xC==maxC)
+			   {
+				   keywordsEmployeedata.setCommentActive(1D);
+			   }
+			   else if(maxC==minC)
+			   {
+				   keywordsEmployeedata.setPublishActive(0D); 
+			   }
+			   else
+			   {
+				   double active = BigDecimalUtil.deciMal(xC-minC, maxC-minC);
+				   keywordsEmployeedata.setCommentActive(active);  
+			   }
+		   }
 	   }
    }
    
@@ -239,8 +315,8 @@ public class TagService {
 	   int employeeCount = employeeRepository.findEmloyeePublishDomainCountByKE(keywordsCoefficientdata.getTagData().getTitle(), employee.getId());
 	   newKeywordsEmployeedata.setEmployeeData(newEmployeeData);
 	   newKeywordsEmployeedata.setPublishCount(employeeCount);
-	   double publishActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getPublishCount());
-	   newKeywordsEmployeedata.setPublishActive(publishActive);
+//	   double publishActive = BigDecimalUtil.deciMal(employeeCount, keywordsCoefficientdata.getPublishCount());
+//	   newKeywordsEmployeedata.setPublishActive(publishActive);
 	   if(CollectionUtils.isEmpty(keywordsCoefficientdata.getKeywordsEmployeedatas()))
 	   {
 		   ArrayList<KeywordsEmployeedata> keywordsEmployeedatas = new ArrayList<KeywordsEmployeedata>();

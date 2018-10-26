@@ -1,5 +1,6 @@
 package com.hankcs.a6;
 
+import com.hankcs.example.aitp.domain.Tag;
 import com.hankcs.example.toutiao.util.HttpUtil;
 import com.hankcs.example.util.JDBCUtil;
 
@@ -9,6 +10,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author jianfei.yin
@@ -16,10 +18,10 @@ import java.util.Map;
  **/
 public class Tag4Coefficient {
 
-    private static final String POST_UTL ="";
+    private static final String POST_UTL ="http://localhost:8080/api/CreateL2Tag";
     private static final String SELECT_FROM_COEFFICIENT = "select * from coefficient";
     public static void main(String[] args) {
-        try (Statement statement= JDBCUtil.getConn("cluster").createStatement()){
+        try (Statement statement= JDBCUtil.getConn("a6").createStatement()){
             ResultSet resultSet = statement.executeQuery(SELECT_FROM_COEFFICIENT);
             List<Map<String, String>> resultList = JDBCUtil.extract(resultSet);
 
@@ -45,7 +47,15 @@ public class Tag4Coefficient {
             e.printStackTrace();
         }
     }
-
+    public static Tag convertTag(TaggingDTO dto)
+    {
+    	Tag tag = new Tag();
+    	tag.setLevel("2");
+    	tag.setTitle(dto.tag);
+    	tag.setObjId(UUID.randomUUID().toString().replace("-", "").toLowerCase());
+		return tag;
+    	
+    }
     public static class TaggingDTO {
         private String custmerId;
         private String tag;
